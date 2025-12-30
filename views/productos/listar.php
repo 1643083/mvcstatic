@@ -67,7 +67,10 @@
                 <td>${element.garantia}</td>
                 <td>${element.ingreso}</td>
                 <td>${element.cantidad}</td>
-                <td></td>
+                <td>
+                  <a href='#' class='btn btn-sm btn-danger'>Eliminar</a>
+                  <a href='#' class='btn btn-sm btn-info'>Editar</a>
+                </td>
               </tr>
               `;
             });

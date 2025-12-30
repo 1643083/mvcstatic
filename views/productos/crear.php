@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Productos</title>
+  <title>Crear producto</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
 </head>
 <body>
   <div class="container">
     <h1>Registro de productos</h1>
+    <a href="./listar.php" class="btn btn-sm btn-primary">Lista de productos</a>
+    <hr>
     <form action="" id="formulario-producto">
       <div class="card">
       <div class="card-header">Complete el formulario</div>
@@ -85,9 +87,15 @@
           body: datos
         })
         .then(response=>response.json())
-        .then(data=>{console.log(data)})
-
-        alert("datos guardatos correctamente")
+        .then(data=>{
+          console.log(data)
+          if (data.id > 0) {
+            alert("datos guardatos correctamente")
+            document.querySelector("#formulario-producto").reset()
+          }else{
+            alert("no se pudo completar el proceso")
+          }
+        })
       }
 
     })
