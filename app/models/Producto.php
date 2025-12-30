@@ -1,23 +1,26 @@
-<?php 
+<?php
 
 //Requerimos de la conexión
 require_once 'Conexion.php';
 
 //Herencia (Conexion sede su método a Producto)
-class Producto extends Conexion{
+class Producto extends Conexion
+{
 
   //Este atributo contendrá la conexión
   private $pdo;
 
   //Constructor
-  public function __construct(){
+  public function __construct()
+  {
     //La conexión asigna el acceso a $this->pdo
     $this->pdo = parent::getConexion();
   }
-  
+
   //¿Qué funciones podemos realizar?
-  public function listar(): array{
-    try{
+  public function listar(): array
+  {
+    try {
       //1. Crear la consulta SQL
       $sql = "
         SELECT 
@@ -36,14 +39,14 @@ class Producto extends Conexion{
       //fetchAll (colección de arreglos)
       //PDO::FETCH_ASSOC (los valores son asociativos)
       return $consulta->fetchAll(PDO::FETCH_ASSOC);
-    }
-    catch (Exception $e){
+    } catch (Exception $e) {
       return [];
     }
   }
 
-  public function registrar($registro = []): int{
-    try{
+  public function registrar($registro = []): int
+  {
+    try {
       //Los comodines, poseen índices (arreglos)
       $sql = "
       INSERT INTO productos 
@@ -68,13 +71,14 @@ class Producto extends Conexion{
       //Retornar la PK (Primary Key) generada
       return $this->pdo->lastInsertId();
 
-    }catch(Exception $e){
+    } catch (Exception $e) {
       return -1;
     }
   }
 
-  public function eliminar($id): int{
-    try{
+  public function eliminar($id): int
+  {
+    try {
       $sql = "DELETE FROM productos WHERE id = ?";
       $consulta = $this->pdo->prepare($sql);
 
@@ -86,13 +90,14 @@ class Producto extends Conexion{
       // ¿qué debemos devolver?
       // retorna la cantidad de filas afectadas
       return $consulta->rowCount();
-    } catch(Exception $e){
+    } catch (Exception $e) {
       return -1;
     }
   }
 
-  public function actualizar($registro = []):int{
-    try{
+  public function actualizar($registro = []): int
+  {
+    try {
       //Los comodines, poseen índices (arreglos)
       $sql = "
       UPDATE productos SET
@@ -124,13 +129,35 @@ class Producto extends Conexion{
       // cuántos registros fueron afectados?
       return $consulta->rowCount();
 
-    }catch(Exception $e){
+    } catch (Exception $e) {
       return -1;
     }
   }
 
-  public function buscar(){
+  public function buscar($id)
+  {
+    try {
+      //1. Crear la consulta SQL
+      $sql = "
+        SELECT 
+          id, clasificacion, marca, descripcion, garantia, ingreso, cantidad
+          FROM productos
+          WHERE id = ?
+      ";
 
+      //2. Enviar la consulta preparada a PDO
+      $consulta = $this->pdo->prepare($sql);
+
+      //3. Ejecutar la consulta
+      $consulta->execute(array($id));
+
+      //4. Entregar resultado
+      //fetchAll (colección de arreglos)
+      //PDO::FETCH_ASSOC (los valores son asociativos)
+      return $consulta->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+      return [];
+    }
   }
 
 }
