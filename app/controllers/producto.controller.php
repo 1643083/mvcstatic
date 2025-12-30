@@ -1,5 +1,9 @@
 <?php
 
+//$prueba = ["test"=> "hola mundo"];
+//echo json_encode($prueba);
+//exit();
+
 //necesita del modelo para poder responder...
 require_once '../models/Producto.php';
 $producto = new Producto();
@@ -12,21 +16,30 @@ $producto = new Producto();
 
 //JSON          : JavaScript Object Notation
 //mecanismo de intercambio de datos
-if (isset($_POST['operacion'])){
+if (isset($_POST['operacion'])) {
 
     //el usuario nos envió una tarea...
-    switch ($_POST['operacion']){
-        case'listar':
+    switch ($_POST['operacion']) {
+        case 'listar':
             $registros = $producto->listar();
             echo json_encode($registros);
             break;
-        case'registrar':
+        case 'registrar':
+            $datos = [
+                "clasificacion" => $_POST['clasificacion'],
+                "marca"         => $_POST['marca'],
+                "descripcion"   => $_POST['descripcion'],
+                "garantia"      => $_POST['garantia'],
+                "ingreso"       => $_POST['ingreso'],
+                "cantidad"      => $_POST['cantidad']
+            ];
+            $idobtenido = $producto->registrar(registro: $datos);
+            echo json_encode(["id"=> $idobtenido]);
+            break;
+        case 'actualizar':
             //algoritmo...
             break;
-        case'actualizar':
-            //algoritmo...
-            break;
-        case'eliminar':
+        case 'eliminar':
             //algoritmo...
             break;
     }
